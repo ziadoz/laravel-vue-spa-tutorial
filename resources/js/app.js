@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 import App from './components/App';
 import Home from './pages/Home';
 import Hello from './pages/Hello';
+import UsersIndex from './pages/UsersIndex';
 
 const router = new VueRouter({
     mode: 'history',
@@ -20,6 +21,11 @@ const router = new VueRouter({
             name: 'hello',
             component: Hello,
         },
+        {
+            path: '/users',
+            name: 'users.index',
+            component: UsersIndex,
+        }
     ],
 });
 
