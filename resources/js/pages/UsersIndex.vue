@@ -11,9 +11,10 @@
         </div>
 
         <ul v-if="users">
-            <li v-for="{ name, email } in users">
+            <li v-for="{ id, name, email } in users">
                 <strong>Name:</strong> {{ name }}
                 <strong>Email:</strong> {{ email }}
+                | <router-link :to="{ name: 'users.edit', params: { id } }">Edit</router-link>
             </li>
         </ul>
 
@@ -26,13 +27,13 @@
 </template>
 
 <script>
-import axios from 'axios';
+import users from '../api/users'
 
 const getUsers = (page, callback) => {
     const params = { page };
 
-    axios
-        .get('/api/users', { params })
+    users
+        .all(page)
         .then(response => {
             callback(null, response.data);
         })

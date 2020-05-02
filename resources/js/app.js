@@ -7,6 +7,7 @@ import App from './components/App';
 import Home from './pages/Home';
 import Hello from './pages/Hello';
 import UsersIndex from './pages/UsersIndex';
+import UsersEdit from './pages/UsersEdit';
 
 const router = new VueRouter({
     mode: 'history',
@@ -25,6 +26,11 @@ const router = new VueRouter({
             path: '/users',
             name: 'users.index',
             component: UsersIndex,
+        },
+        {
+            path: '/users/:id/edit',
+            name: 'users.edit',
+            component: UsersEdit,
         }
     ],
 });
