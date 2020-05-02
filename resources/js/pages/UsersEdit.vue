@@ -17,6 +17,7 @@
 
             <div class="form-group">
                 <button type="submit" :disabled="saving">Update</button>
+                <button type="submit" :disabled="saving" @click.prevent="onDelete($event)">Delete</button>
             </div>
         </form>
     </div>
@@ -63,9 +64,21 @@ export default {
                 this.saving = false;
             });
         },
-        flashMessage(message, timeout = 5000) {
+        onDelete(event) {
+            this.saving = true;
+            users.delete(this.user.id)
+                .then((response) => {
+                    this.flashMessage('User deleted', () => {
+                        this.$router.push({ name: 'users.index' });
+                    }, 2000);
+                });
+        },
+        flashMessage(message, fn = () => {}, timeout = 5000) {
             this.message = message;
-            setTimeout(() => this.message = null, timeout);
+            setTimeout(() => {
+                this.message = null;
+                fn();
+            }, timeout);
         },
         clearErrors() {
             this.errors = { name: "", email: "" };
@@ -75,6 +88,8 @@ export default {
         users.find(this.$route.params.id).then(response => {
             this.loaded = true;
             this.user = response.data.data;
+        }).catch((error) => {
+            this.$router.push({ name: '404' });
         });
     }
 };

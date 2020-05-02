@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Hello from './pages/Hello';
 import UsersIndex from './pages/UsersIndex';
 import UsersEdit from './pages/UsersEdit';
+import NotFound from './pages/NotFound';
 
 const router = new VueRouter({
     mode: 'history',
@@ -31,6 +32,15 @@ const router = new VueRouter({
             path: '/users/:id/edit',
             name: 'users.edit',
             component: UsersEdit,
+        },
+        {
+            path: '/404',
+            name: '404',
+            component: NotFound,
+        },
+        {
+            path: '*',
+            redirect: '/404',
         }
     ],
 });
