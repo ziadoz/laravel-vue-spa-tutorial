@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import users from '../api/users.js';
+import users from '~/api/users.js';
 
 export default {
     data() {

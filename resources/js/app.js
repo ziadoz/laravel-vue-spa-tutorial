@@ -3,12 +3,12 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-import App from './components/App';
-import Home from './pages/Home';
-import Hello from './pages/Hello';
-import UsersIndex from './pages/UsersIndex';
-import UsersEdit from './pages/UsersEdit';
-import NotFound from './pages/NotFound';
+import App from '~/components/App';
+import Home from '~/pages/Home';
+import Hello from '~/pages/Hello';
+import UsersIndex from '~/pages/UsersIndex';
+import UsersEdit from '~/pages/UsersEdit';
+import NotFound from '~/pages/NotFound';
 
 const router = new VueRouter({
     mode: 'history',

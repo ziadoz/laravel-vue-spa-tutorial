@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import users from '../api/users'
+import users from '~/api/users'
 
 const getUsers = (page, callback) => {
     const params = { page };
