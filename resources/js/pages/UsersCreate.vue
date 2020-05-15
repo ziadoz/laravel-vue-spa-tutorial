@@ -6,16 +6,19 @@
             <div class="form-group">
                 <label for="user-name">Name</label>
                 <input id="user-name" type="text" v-model="user.name" />
+                <p v-if="errors.name" class="error">{{ errors.name }}</p>
             </div>
 
             <div class="form-group">
                 <label for="user-email">Email</label>
                 <input id="user-email" type="text" v-model="user.email" />
+                <p v-if="errors.email" class="error">{{ errors.email }}</p>
             </div>
 
             <div class="form-group">
                 <label for="user-password">Password</label>
                 <input id="user-password" type="password" v-model="user.password" />
+                <p v-if="errors.email" class="error">{{ errors.password }}</p>
             </div>
 
             <div class="form-group">
@@ -29,18 +32,25 @@
 
 <script>
 import users from '~/api/users';
+import flash from '~/mixins/flash';
+import parseValidationErrors from '~/util/parseValidationErrors';
 
 export default {
+    mixins: [flash],
     data() {
         return {
             saving: false,
-            message: false,
             user: {
                 name: '',
                 email: '',
                 password: '',
+            },
+            errors: {
+                name: "",
+                email: "",
+                password: "",
             }
-        }
+        };
     },
     methods: {
         onSubmit($event) {
@@ -49,14 +59,30 @@ export default {
 
             users.create(this.user)
                 .then((response) => {
-                    this.$router.push({ name: 'users.edit', params: { id: response.data.data.id } });
-                })
-                .catch((e) => {
-                    this.message = e.response.data.message || 'There was an issue creating the user';
+                    this.user = response.data.data;
+                    this.clearErrors();
+                    this.flashMessage('User created', () => {
+                        this.$router.push({ name: 'users.edit', params: { id: response.data.data.id } });
+                    }, 0);
+                }).catch((error) => {
+                    if (error.response.status === 422) {
+                        const errors = parseValidationErrors(error);
+                        this.errors.name = errors.name;
+                        this.errors.email = errors.email;
+                        this.errors.password = errors.password;
+                        this.flashMessage('User validation failed');
+                    }
                 })
                 .then(() => {
                     this.saving = false;
                 })
+        },
+        clearErrors() {
+            this.errors = {
+                name: "",
+                email: "",
+                password: "",
+            };
         }
     }
 };
@@ -80,5 +106,11 @@ $darkRed: darken($red, 50%);
     width: 50%;
     border: 1px solid $darkRed;
     border-radius: 5px;
+}
+
+.error {
+    color: $darkRed;
+    margin: 10px 0;
+    padding: 0;
 }
 </style>

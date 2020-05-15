@@ -28,13 +28,15 @@
 
 <script>
 import users from '~/api/users.js';
+import flash from '~/mixins/flash';
+import parseValidationErrors from '~/util/parseValidationErrors';
 
 export default {
+    mixins: [flash],
     data() {
         return {
             loaded: false,
             saving: false,
-            message: null,
             user: {
                 id: null,
                 name: "",
@@ -53,14 +55,14 @@ export default {
                 name: this.user.name,
                 email: this.user.email,
             }).then((response) => {
-                this.flashMessage('User updated');
-                this.clearErrors();
                 this.user = response.data.data;
+                this.clearErrors();
+                this.flashMessage('User updated');
             }).catch((error) => {
                 if (error.response.status === 422) {
-                    const { name: nameErrors, email: emailErrors } = error.response.data.errors;
-                    this.errors.name = (nameErrors && nameErrors[0] ? nameErrors[0] : "");
-                    this.errors.email = (emailErrors && emailErrors[0] ? emailErrors[0] : "");
+                    const errors = parseValidationErrors(error);
+                    this.errors.name = errors.name;
+                    this.errors.email = errors.email;
                     this.flashMessage('User validation failed');
                 }
             }).then(() => {
@@ -76,15 +78,11 @@ export default {
                     }, 2000);
                 });
         },
-        flashMessage(message, fn = () => {}, timeout = 5000) {
-            this.message = message;
-            setTimeout(() => {
-                this.message = null;
-                fn();
-            }, timeout);
-        },
         clearErrors() {
-            this.errors = { name: "", email: "" };
+            this.errors = {
+                name: "",
+                email: "",
+            };
         }
     },
     created() {
