@@ -11,7 +11,7 @@
         </div>
 
         <ul v-if="users">
-            <li v-for="{ id, name, email } in users">
+            <li v-for="{ id, name, email } in users" :key="id">
                 <strong>Name:</strong> {{ name }}
                 <strong>Email:</strong> {{ email }}
                 | <router-link :to="{ name: 'users.edit', params: { id } }">Edit</router-link>
@@ -23,6 +23,10 @@
             {{ paginationCount }}
             <button :disabled="! nextPage" @click.prevent="goToNext">Next</button>
         </div>
+
+        <p>
+            <router-link :to="{ name: 'users.create' }">Add User</router-link>
+        </p>
     </div>
 </template>
 

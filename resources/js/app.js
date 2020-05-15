@@ -7,6 +7,7 @@ import App from '~/components/App';
 import Home from '~/pages/Home';
 import Hello from '~/pages/Hello';
 import UsersIndex from '~/pages/UsersIndex';
+import UsersCreate from '~/pages/UsersCreate';
 import UsersEdit from '~/pages/UsersEdit';
 import NotFound from '~/pages/NotFound';
 
@@ -27,6 +28,11 @@ const router = new VueRouter({
             path: '/users',
             name: 'users.index',
             component: UsersIndex,
+        },
+        {
+            path: '/users/create',
+            name: 'users.create',
+            component: UsersCreate,
         },
         {
             path: '/users/:id/edit',

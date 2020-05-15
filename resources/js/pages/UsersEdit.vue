@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1>Edit User</h1>
         <div v-if="message" class="alert">{{ message }}</div>
         <div v-if="! loaded">Loading...</div>
         <form @submit.prevent="onSubmit($event)" v-else>
@@ -16,7 +17,9 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" :disabled="saving">Update</button>
+                <button type="submit" :disabled="saving">
+                    {{ saving ? 'Updating...' : 'Update' }}
+                </button>
                 <button type="submit" :disabled="saving" @click.prevent="onDelete($event)">Delete</button>
             </div>
         </form>
